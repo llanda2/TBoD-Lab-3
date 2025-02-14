@@ -10,7 +10,7 @@ app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 indicators = {
     "IT.NET.USER.ZS": "Individuals using the Internet (% of population)",
     "SG.GEN.PARL.ZS": "Proportion of seats held by women in national parliaments (%)",
-    "EN.ATM.CO2E.KT": "CO2 emissions (kt)",
+    "SP.URB.TOTL.IN.ZS": "Urban population (% of total population)",
 }
 
 # get country name and ISO id for mapping on choropleth
@@ -33,6 +33,7 @@ def update_wb_data():
     # Add country ISO3 id to main df
     df = pd.merge(df, countries, on="country")
     df = df.rename(columns=indicators)
+
     return df
 
 
