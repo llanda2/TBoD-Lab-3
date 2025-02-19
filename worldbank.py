@@ -5,7 +5,7 @@ import pandas as pd
 from pandas_datareader import wb
 
 
-app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = Dash(__name__, external_stylesheets=[dbc.themes.LUX])
 
 indicators = {
     "IT.NET.USER.ZS": "Individuals using the Internet (% of population)",
@@ -20,6 +20,8 @@ countries.dropna(subset=["capitalCity"], inplace=True)
 countries = countries[["name", "iso3c"]]
 countries = countries[countries["name"] != "Kosovo"]
 countries = countries.rename(columns={"name": "country"})
+countries = countries[countries["country"] != "Korea, Dem. People's Rep."]
+
 
 
 def update_wb_data():
@@ -33,7 +35,7 @@ def update_wb_data():
     # Add country ISO3 id to main df
     df = pd.merge(df, countries, on="country")
     df = df.rename(columns=indicators)
-
+    # print(df)
     return df
 
 
@@ -104,7 +106,7 @@ app.layout = dbc.Container(
                             children="Submit",
                             n_clicks=0,
                             color="primary",
-                            className="mt-4",
+                            className="mt-4 fw-bold",
                         ),
                     ],
                     width=6,
