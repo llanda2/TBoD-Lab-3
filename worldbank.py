@@ -60,26 +60,24 @@ app.layout = dbc.Container(
             )
         ),
         dbc.Row(
-            dbc.Col(
-                [
-                    dbc.Label(
-                        "Select Data Set:",
-                        className="fw-bold",
-                        style={"textDecoration": "underline", "fontSize": 20},
-                    ),
-                    dcc.Dropdown(
-                        id="dropdown-indicator",
-                        options=[{"label": i, "value": i} for i in indicators.values()],
-                        value=list(indicators.values())[0],
-                        clearable=False,
-                        style={"width": "100%"},
-                    ),
-                ],
-                width=6,
-            )
-        ),
-        dbc.Row(
             [
+                dbc.Col(
+                    [
+                        dbc.Label(
+                            "Select Data Set:",
+                            className="fw-bold",
+                            style={"textDecoration": "underline", "fontSize": 20},
+                        ),
+                        dcc.Dropdown(
+                            id="dropdown-indicator",
+                            options=[{"label": i, "value": i} for i in indicators.values()],
+                            value=list(indicators.values())[0],
+                            clearable=False,
+                            style={"width": "100%"},
+                        ),
+                    ],
+                    width=6,  # First half of the row
+                ),
                 dbc.Col(
                     [
                         dbc.Label(
@@ -108,22 +106,42 @@ app.layout = dbc.Container(
                                 2016: "2016",
                             },
                         ),
-                        dbc.Button(
-                            id="my-button",
-                            children="Submit",
-                            n_clicks=0,
-                            color="primary",
-                            className="mt-4 fw-bold",
-                        ),
                     ],
-                    width=6,
+                    width=6,  # Second half of the row
                 ),
             ]
+        ),
+        dbc.Row(
+            [
+                dbc.Col(
+                    html.Span(
+                        id="click-count",
+                        children="Choropleth parameters updated: 0 times",
+                        style={"fontSize": "16px", "fontWeight": "bold"},
+                    ),
+                    width="auto",
+                ),
+                dbc.Col(
+                    dbc.Button(
+                        id="my-button",
+                        children="Submit",
+                        n_clicks=0,
+                        color="primary",
+                        className="fw-bold",
+                    ),
+                    width="auto",
+                    className="d-flex justify-content-end",
+                ),
+            ],
+            justify="end",
+            align="center",
+            style={"marginTop": "10px"},
         ),
         dcc.Store(id="storage", storage_type="session", data={}),
         dcc.Interval(id="timer", interval=1000 * 60, n_intervals=0),
     ]
 )
+
 
 
 @app.callback(Output("storage", "data"), Input("timer", "n_intervals"))
