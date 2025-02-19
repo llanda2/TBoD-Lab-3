@@ -21,7 +21,8 @@ countries = countries[["name", "iso3c"]]
 countries = countries[countries["name"] != "Kosovo"]
 countries = countries.rename(columns={"name": "country"})
 countries = countries[countries["country"] != "Korea, Dem. People's Rep."]
-
+# print(countries.head().to_string())
+# exit(0)
 
 
 def update_wb_data():
@@ -47,6 +48,11 @@ app.layout = dbc.Container(
                     html.H1(
                         "Comparison of World Bank Country Data",
                         style={"textAlign": "center"},
+                    ),
+                    html.H4(
+                        id="last-updated",
+                        children="Data last fetched: Not yet updated",
+                        style={"textAlign": "center", "color": "gray", "marginTop": "10px"},
                     ),
                     dcc.Graph(id="my-choropleth", figure={}),
                 ],
