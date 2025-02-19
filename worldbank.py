@@ -67,14 +67,15 @@ app.layout = dbc.Container(
                         className="fw-bold",
                         style={"textDecoration": "underline", "fontSize": 20},
                     ),
-                    dcc.RadioItems(
-                        id="radio-indicator",
+                    dcc.Dropdown(
+                        id="dropdown-indicator",
                         options=[{"label": i, "value": i} for i in indicators.values()],
                         value=list(indicators.values())[0],
-                        inputClassName="me-2",
+                        clearable=False,
+                        style={"width": "100%"},
                     ),
                 ],
-                width=4,
+                width=6,
             )
         ),
         dbc.Row(
@@ -136,7 +137,7 @@ def store_data(n_time):
     Input("my-button", "n_clicks"),
     Input("storage", "data"),
     State("years-range", "value"),
-    State("radio-indicator", "value"),
+    State("dropdown-indicator", "value"),
 )
 def update_graph(n_clicks, stored_dataframe, years_chosen, indct_chosen):
     dff = pd.DataFrame.from_records(stored_dataframe)
