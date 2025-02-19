@@ -1,3 +1,5 @@
+import datetime
+from datetime import datetime
 from dash import Dash, html, dcc, Input, Output, State
 import plotly.express as px
 import dash_bootstrap_components as dbc
@@ -38,6 +40,46 @@ def update_wb_data():
     df = df.rename(columns=indicators)
     # print(df)
     return df
+
+
+# Callback to update the last updated time in the subheading
+@app.callback(
+    Output("last-updated", "children"),
+    Input("timer", "n_intervals"),
+)
+def update_last_fetched_time(n_intervals):
+    # Use the current time for the update
+    now = datetime.now()
+    human_readable_time = now.strftime("%Y-%m-%d %H:%M:%S")
+    return f"Data last fetched: {human_readable_time}"
+
+
+# Callback to update the parameter change count and adjust the range slider selection
+@app.callback(
+    [
+        Output("click-count", "children"),
+        Output("years-range", "value"),
+    ],
+    [
+        Input("my-button", "n_clicks"),
+    ],
+    [
+        State("years-range", "value"),
+    ],
+)
+def update_parameter_changes_and_slider_value(n_clicks, current_range):
+    # If the button hasn't been clicked, no changes are made
+    if n_clicks == 0:
+        return "Choropleth parameters updated: 0 times", current_range
+
+    # Increment the upper bound of the slider value range
+    new_range = [current_range[0], current_range[1] + 1]
+
+    # Update the click count text
+    new_count_text = f"Choropleth parameters updated: {n_clicks} times"
+
+    return new_count_text, new_range
+
 
 
 app.layout = dbc.Container(
